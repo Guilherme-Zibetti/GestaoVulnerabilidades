@@ -2,68 +2,163 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Gerador de Plano de Testes - GRC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Testes de Vulnerabilidades</title>
+    <!-- Bibliotecas para geração de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: #e0e0e0; padding: 40px; }
-        .container { max-width: 900px; background: #2d2d2d; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); margin: auto; }
-        h1 { text-align: center; color: #4dabf7; border-bottom: 2px solid #4dabf7; padding-bottom: 10px; }
-        h2 { color: #4dabf7; font-size: 1.3em; margin-top: 25px; border-left: 4px solid #4dabf7; padding-left: 10px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 8px; color: #adb5bd; }
-        input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid #444; border-radius: 6px; background: #3d3d3d; color: #fff; box-sizing: border-box; }
-        input:focus, textarea:focus { border-color: #4dabf7; outline: none; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .btn-submit { display: block; width: 100%; padding: 18px; background-color: #228be6; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; margin-top: 30px; font-weight: bold; }
-        .btn-submit:hover { background-color: #1c7ed6; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 40px; background-color: #f9f9f9; }
+        .container { background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; font-size: 24px; margin-bottom: 30px; text-transform: uppercase; }
+        h2 { font-size: 18px; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .section-title { font-weight: bold; margin-bottom: 10px; display: block; }
+        .input-group { margin-bottom: 15px; padding-left: 20px; }
+        label { font-weight: bold; display: inline-block; width: 180px; vertical-align: top; }
+        textarea, input[type="text"] { width: calc(100% - 200px); padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px; }
+        textarea { height: 60px; resize: vertical; }
+        
+        /* Matriz de Riscos */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: left; }
+        th { background-color: #e9ecef; }
+        .risk-input { width: 100%; border: none; background: transparent; font-size: 14px; outline: none; }
+
+        /* Checklist */
+        .checklist-item { margin-bottom: 10px; display: flex; align-items: center; }
+        .checklist-item input[type="checkbox"] { margin-right: 15px; transform: scale(1.2); cursor: pointer; }
+
+        .btn-container { text-align: center; margin-top: 40px; }
+        .btn-submit { background-color: #000; color: #fff; padding: 15px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        .btn-submit:hover { background-color: #333; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Plano de Testes de Vulnerabilidades</h1>
-    
+
     <form id="planoForm">
-        <h2>1. Objetivos e Critérios</h2>
-        <div class="form-group">
+        <!-- Seção 1 -->
+        <h2>1. Objetivos e Critérios de Sucesso</h2>
+        <div class="input-group">
             <label>Objetivo:</label>
             <textarea id="objetivo" placeholder="Identificar vulnerabilidades conhecidas, falhas de configuração e serviços desatualizados."></textarea>
         </div>
-        <div class="form-group">
+        <div class="input-group">
             <label>Critério de Sucesso:</label>
-            <textarea id="criterio" placeholder="Cobertura de 100% dos ativos alvo e geração de relatórios sem falsos positivos..."></textarea>
+            <textarea id="criterio" placeholder="Cobertura de 100% dos ativos alvo e geração de relatórios sem falsos positivos críticos validados manualmente."></textarea>
         </div>
 
-        <h2>2. Escopo e Exclusões</h2>
-        <div class="grid">
-            <div class="form-group">
-                <label>VLANs / Segmentos:</label>
-                <input type="text" id="vlan" placeholder="VLANs de servidores, redes administrativas...">
-            </div>
-            <div class="form-group">
-                <label>Exclusões (Sistemas Críticos):</label>
-                <input type="text" id="exclusoes" placeholder="Sistemas legados (e.g.: Sincro)">
-            </div>
+        <!-- Seção 2 -->
+        <h2>2. Escopo Detalhado</h2>
+        <p style="font-size: 14px; font-style: italic;">Listar o que será testado e o que está expressamente proibido.</p>
+        <div class="input-group">
+            <label>Segmentos de Rede:</label>
+            <input type="text" id="segmentos" placeholder="VLANs de servidores, redes administrativas, laboratórios específicos.">
+        </div>
+        <div class="input-group">
+            <label>Tipos de Ativos:</label>
+            <input type="text" id="ativos" placeholder="IPs internos, URLs externas, APIs, dispositivos de rede.">
+        </div>
+        <div class="input-group">
+            <label>Exclusões:</label>
+            <input type="text" id="exclusoes" placeholder="Sistemas legados que podem travar com scans agressivos (e.g.: Sincro).">
         </div>
 
-        <h2>3. Cronograma e Ferramentas</h2>
-        <div class="grid">
-            <div class="form-group">
-                <label>Janela de Scan:</label>
-                <input type="text" id="janela" placeholder="Sábado às 18:00 às 10:00 do Domingo">
-            </div>
-            <div class="form-group">
-                <label>Frequência:</label>
-                <input type="text" id="frequencia" placeholder="Trimestral para ativos externos">
-            </div>
+        <!-- Seção 3 -->
+        <h2>3. Metodologia de Teste</h2>
+        <div class="input-group">
+            <label>Scan Não Autenticado:</label>
+            <input type="text" id="scan_nao_autenticado" placeholder="Visão de um atacante externo.">
         </div>
-        <div class="form-group">
-            <label>Ferramentas Aprovadas:</label>
-            <input type="text" id="ferramentas" placeholder="OpenVAS, OWASP ZAP, Scripts Python customizados">
+        <div class="input-group">
+            <label>Scan Autenticado:</label>
+            <input type="text" id="scan_autenticado" placeholder="Visão interna detalhada.">
+        </div>
+        <div class="input-group">
+            <label>Testes de Intrusão:</label>
+            <input type="text" id="pentest" placeholder="Validação manual de vulnerabilidades críticas encontradas pelo scanner.">
         </div>
 
-        <button type="button" class="btn-submit" onclick="gerarPDF()">GERAR PDF DO PLANO</button>
+        <!-- Seção 4 -->
+        <h2>4. Cronograma e Janelas de Execução</h2>
+        <div class="input-group">
+            <label>Janela de Scan:</label>
+            <input type="text" id="janela" placeholder="de sábado as 18:00 às 10:00 do Domingo.">
+        </div>
+        <div class="input-group">
+            <label>Frequência:</label>
+            <input type="text" id="frequencia" placeholder="Semestral para conformidade e trimestral para ativos expostos à internet.">
+        </div>
+
+        <!-- Seção 5 -->
+        <h2>5. Ferramentas Utilizadas</h2>
+        <div class="input-group">
+            <label>Scanner de Rede:</label>
+            <input type="text" id="tool_rede" placeholder="OpenVAS.">
+        </div>
+        <div class="input-group">
+            <label>Scanner Web:</label>
+            <input type="text" id="tool_web" placeholder="(Teríamos que implementar, e.g., OWASP ZAP)">
+        </div>
+        <div class="input-group">
+            <label>Scanner DB:</label>
+            <input type="text" id="tool_db" placeholder="Preencha se houver">
+        </div>
+        <div class="input-group">
+            <label>Scripts Customizados:</label>
+            <input type="text" id="tool_scripts" placeholder="Scripts, e.g., python, para checagem de portas ou serviços específicos.">
+        </div>
+
+        <!-- Matriz de Riscos -->
+        <h2>Matriz de Riscos do Teste</h2>
+        <table id="tabelaRiscos">
+            <thead>
+                <tr>
+                    <th>Risco</th>
+                    <th>Impacto</th>
+                    <th>Ação de Mitigação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="risk-input" value="Instabilidade de Sistema"></td>
+                    <td><input type="text" class="risk-input" value="Alto"></td>
+                    <td><input type="text" class="risk-input" value="Interromper o scan imediatamente e notificar o departamento responsável."></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="risk-input" value="Bloqueio de Contas"></td>
+                    <td><input type="text" class="risk-input" value="Médio"></td>
+                    <td><input type="text" class="risk-input" value="Usar contas de serviço específicas."></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="risk-input" value="Saturação de Link"></td>
+                    <td><input type="text" class="risk-input" value="Médio"></td>
+                    <td><input type="text" class="risk-input" value="Limitar a largura de banda e o número de threads do scanner."></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="risk-input" value="Falsos Positivos"></td>
+                    <td><input type="text" class="risk-input" value="Baixo"></td>
+                    <td><input type="text" class="risk-input" value="Validação manual antes da submissão do reporte final."></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Checklist -->
+        <h2>Fluxo de Execução (Checklist)</h2>
+        <div id="checklistContainer">
+            <div class="checklist-item"><input type="checkbox" id="check1"> <strong>Autorização Formal:</strong> Obter o "OK" dos donos do sistema.</div>
+            <div class="checklist-item"><input type="checkbox" id="check2"> <strong>Backup:</strong> Confirmar que os sistemas alvo possuem backups atualizados.</div>
+            <div class="checklist-item"><input type="checkbox" id="check3"> <strong>Notificação:</strong> Abrir chamado na fila do DSInf para acompanhamento pela equipe.</div>
+            <div class="checklist-item"><input type="checkbox" id="check4"> <strong>Execução:</strong> Iniciar os scans conforme a metodologia definida.</div>
+            <div class="checklist-item"><input type="checkbox" id="check5"> <strong>Análise:</strong> Filtrar resultados e remover duplicidades ou erros.</div>
+            <div class="checklist-item"><input type="checkbox" id="check6"> <strong>Reporte:</strong> Submeter relatório técnico para o dono do serviço/sistema.</div>
+        </div>
+
+        <div class="btn-container">
+            <button type="button" class="btn-submit" onclick="gerarPDF()">GERAR PDF DO PLANO</button>
+        </div>
     </form>
 </div>
 
@@ -71,38 +166,92 @@
     function gerarPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+
+        // Título Centralizado
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("Plano de Testes de Vulnerabilidades", pageWidth / 2, 20, { align: "center" });
+
+        doc.setFontSize(11);
+        let yPos = 35;
+
+        // Função auxiliar para adicionar seções de texto
+        function addSection(title, contentId, isPlaceholder = false) {
+            const element = document.getElementById(contentId);
+            const text = element.value || (isPlaceholder ? element.placeholder : "");
+            
+            doc.setFont("helvetica", "bold");
+            doc.text(title, 20, yPos);
+            doc.setFont("helvetica", "normal");
+            
+            const splitText = doc.splitTextToSize(text, 160);
+            doc.text(splitText, 30, yPos + 7);
+            yPos += (splitText.length * 7) + 10;
+        }
+
+        // Seção 1 e 2
+        addSection("1. Objetivos e Critérios:", "objetivo", true);
+        addSection("Critério de Sucesso:", "criterio", true);
         
-        // Cabeçalho
-        doc.setFillColor(34, 139, 230);
-        doc.rect(0, 0, 210, 30, 'F');
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(20);
-        doc.text("Plano de Testes de Vulnerabilidades", 20, 20);
+        doc.setFont("helvetica", "bold");
+        doc.text("2. Escopo Detalhado:", 20, yPos);
+        yPos += 7;
+        doc.setFont("helvetica", "normal");
+        doc.text("- Segmentos: " + (document.getElementById('segmentos').value || document.getElementById('segmentos').placeholder), 30, yPos);
+        yPos += 7;
+        doc.text("- Ativos: " + (document.getElementById('ativos').value || document.getElementById('ativos').placeholder), 30, yPos);
+        yPos += 7;
+        doc.text("- Exclusões: " + (document.getElementById('exclusoes').value || document.getElementById('exclusoes').placeholder), 30, yPos);
+        yPos += 15;
 
-        // Conteúdo
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(14);
-        doc.text("1. Objetivos", 20, 45);
-        doc.setFontSize(10);
-        doc.text(doc.splitTextToSize("Objetivo: " + (document.getElementById('objetivo').value || document.getElementById('objetivo').placeholder), 170), 20, 55);
-        doc.text(doc.splitTextToSize("Sucesso: " + (document.getElementById('criterio').value || document.getElementById('criterio').placeholder), 170), 20, 65);
+        // Matriz de Riscos (Tabela)
+        doc.setFont("helvetica", "bold");
+        doc.text("Matriz de Riscos do Teste", pageWidth / 2, yPos, { align: "center" });
+        
+        const riskData = [];
+        const rows = document.querySelectorAll("#tabelaRiscos tbody tr");
+        rows.forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            riskData.push([inputs[0].value, inputs[1].value, inputs[2].value]);
+        });
 
-        doc.setFontSize(14);
-        doc.text("2. Detalhes Técnicos", 20, 85);
         doc.autoTable({
-            startY: 90,
-            head: [['Item', 'Descrição']],
-            body: [
-                ['VLANs', document.getElementById('vlan').value || document.getElementById('vlan').placeholder],
-                ['Exclusões', document.getElementById('exclusoes').value || document.getElementById('exclusoes').placeholder],
-                ['Janela', document.getElementById('janela').value || document.getElementById('janela').placeholder],
-                ['Ferramentas', document.getElementById('ferramentas').value || document.getElementById('ferramentas').placeholder]
-            ],
-            theme: 'striped'
+            startY: yPos + 5,
+            head: [['Risco', 'Impacto', 'Ação de Mitigação']],
+            body: riskData,
+            theme: 'grid',
+            headStyles: { fillColor: [233, 236, 239], textColor: [0, 0, 0], fontStyle: 'bold' },
+            styles: { fontSize: 9, cellPadding: 3 }
+        });
+
+        yPos = doc.lastAutoTable.finalY + 15;
+
+        // Checklist
+        doc.setFont("helvetica", "bold");
+        doc.text("Fluxo de Execução (Checklist)", 20, yPos);
+        yPos += 10;
+        doc.setFont("helvetica", "normal");
+
+        const checklist = [
+            { id: "check1", text: "Autorização Formal: Obter o 'OK' dos donos do sistema." },
+            { id: "check2", text: "Backup: Confirmar que os sistemas alvo possuem backups atualizados." },
+            { id: "check3", text: "Notificação: Abrir chamado na fila do DSInf." },
+            { id: "check4", text: "Execução: Iniciar os scans conforme metodologia." },
+            { id: "check5", text: "Análise: Filtrar resultados e remover duplicidades." },
+            { id: "check6", text: "Reporte: Submeter relatório técnico." }
+        ];
+
+        checklist.forEach((item, index) => {
+            const isChecked = document.getElementById(item.id).checked;
+            const mark = isChecked ? "[X]" : "[ ]";
+            doc.text(`${index + 1}. ${mark} ${item.text}`, 25, yPos);
+            yPos += 7;
         });
 
         doc.save("Plano_de_Testes_Vulnerabilidades.pdf");
     }
 </script>
+
 </body>
 </html>
