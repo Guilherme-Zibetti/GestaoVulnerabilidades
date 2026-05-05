@@ -25,13 +25,14 @@
 
         .btn-row { cursor: pointer; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold; }
         .btn-add { background-color: #28a745; color: white; margin-bottom: 10px; }
-        .btn-remove { background-color: #dc3545; color: white; font-size: 12px; }
+        .btn-remove { background-color: #dc3545; color: white; font-size: 12px; padding: 2px 8px; }
 
         .checklist-static { background: #fdfdfd; border: 1px dashed #ccc; padding: 25px; border-radius: 4px; }
         .checklist-item { margin-bottom: 12px; font-size: 15px; color: #333; font-family: monospace; }
 
         .btn-container { text-align: center; margin-top: 40px; }
-        .btn-submit { background-color: #1a1a1a; color: #fff; padding: 18px 40px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        .btn-submit { background-color: #1a1a1a; color: #fff; padding: 18px 40px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-submit:hover { background-color: #444; }
     </style>
 </head>
 <body>
@@ -115,7 +116,7 @@
                         <th>Risco</th>
                         <th>Impacto</th>
                         <th>Ação de Mitigação</th>
-                        <th style="width: 50px;">Ação</th>
+                        <th style="width: 40px; background-color: #f2f2f2;"></th> <!-- Célula Ação removida -->
                     </tr>
                 </thead>
                 <tbody>
