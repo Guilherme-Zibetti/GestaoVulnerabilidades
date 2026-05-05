@@ -16,13 +16,24 @@
         textarea, input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
         textarea { height: 70px; }
         
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #333; padding: 12px; text-align: left; }
-        th { background-color: #f2f2f2; font-weight: bold; }
-        .risk-input { width: 100%; border: none; background: transparent; font-size: 14px; outline: none; }
+        /* Ajuste Matriz de Riscos */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #333; }
+        th, td { border: 1px solid #333; padding: 0; text-align: left; }
+        th { background-color: #f2f2f2; font-weight: bold; padding: 12px; }
+        .risk-input { 
+            width: 100%; 
+            border: none; 
+            padding: 12px; 
+            background: transparent; 
+            font-size: 14px; 
+            outline: none; 
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        .risk-input:focus { background-color: #fffbe6; }
 
-        .checklist-static { background: #fdfdfd; border: 1px dashed #ccc; padding: 20px; border-radius: 4px; }
-        .checklist-item { margin-bottom: 8px; font-size: 14px; color: #555; }
+        .checklist-static { background: #fdfdfd; border: 1px dashed #ccc; padding: 25px; border-radius: 4px; }
+        .checklist-item { margin-bottom: 12px; font-size: 15px; color: #333; font-family: monospace; }
 
         .btn-container { text-align: center; margin-top: 40px; }
         .btn-submit { background-color: #1a1a1a; color: #fff; padding: 18px 40px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; transition: 0.3s; }
@@ -47,7 +58,7 @@
 
         <h2>2. Escopo Detalhado</h2>
         <div class="input-group">
-            <label>Segmentos:</label>
+            <label>Segmentos de Rede:</label>
             <input type="text" id="segmentos" placeholder="VLANs de servidores, redes administrativas, laboratórios específicos.">
         </div>
         <div class="input-group">
@@ -112,36 +123,36 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input type="text" class="risk-input" value="Instabilidade de Sistema"></td>
-                    <td><input type="text" class="risk-input" value="Alto"></td>
-                    <td><input type="text" class="risk-input" value="Interromper o scan imediatamente e notificar o departamento responsável."></td>
+                    <td><input type="text" class="risk-input" placeholder="Instabilidade de Sistema"></td>
+                    <td><input type="text" class="risk-input" placeholder="Alto"></td>
+                    <td><input type="text" class="risk-input" placeholder="Interromper o scan imediatamente e notificar o departamento responsável."></td>
                 </tr>
                 <tr>
-                    <td><input type="text" class="risk-input" value="Bloqueio de Contas"></td>
-                    <td><input type="text" class="risk-input" value="Médio"></td>
-                    <td><input type="text" class="risk-input" value="Usar contas de serviço específicas."></td>
+                    <td><input type="text" class="risk-input" placeholder="Bloqueio de Contas"></td>
+                    <td><input type="text" class="risk-input" placeholder="Médio"></td>
+                    <td><input type="text" class="risk-input" placeholder="Usar contas de serviço específicas."></td>
                 </tr>
                 <tr>
-                    <td><input type="text" class="risk-input" value="Saturação de Link"></td>
-                    <td><input type="text" class="risk-input" value="Médio"></td>
-                    <td><input type="text" class="risk-input" value="Limitar a largura de banda e o número de threads do scanner."></td>
+                    <td><input type="text" class="risk-input" placeholder="Saturação de Link"></td>
+                    <td><input type="text" class="risk-input" placeholder="Médio"></td>
+                    <td><input type="text" class="risk-input" placeholder="Limitar a largura de banda e o número de threads do scanner."></td>
                 </tr>
                 <tr>
-                    <td><input type="text" class="risk-input" value="Falsos Positivos"></td>
-                    <td><input type="text" class="risk-input" value="Baixo"></td>
-                    <td><input type="text" class="risk-input" value="Validação manual antes da submissão do reporte final."></td>
+                    <td><input type="text" class="risk-input" placeholder="Falsos Positivos"></td>
+                    <td><input type="text" class="risk-input" placeholder="Baixo"></td>
+                    <td><input type="text" class="risk-input" placeholder="Validação manual antes da submissão do reporte final."></td>
                 </tr>
             </tbody>
         </table>
 
         <h2>Fluxo de Execução (Checklist para Impressão)</h2>
         <div class="checklist-static">
-            <div class="checklist-item">[ ] 1. Autorização Formal</div>
-            <div class="checklist-item">[ ] 2. Backup</div>
-            <div class="checklist-item">[ ] 3. Notificação</div>
-            <div class="checklist-item">[ ] 4. Execução</div>
-            <div class="checklist-item">[ ] 5. Análise</div>
-            <div class="checklist-item">[ ] 6. Reporte</div>
+            <div class="checklist-item">[&nbsp;&nbsp;&nbsp;] 1. Autorização Formal</div>
+            <div class="checklist-item">[&nbsp;&nbsp;&nbsp;] 2. Backup</div>
+            <div class="checklist-item">[&nbsp;&nbsp;&nbsp;] 3. Notificação</div>
+            <div class="checklist-item">[&nbsp;&nbsp;&nbsp;] 4. Execução</div>
+            <div class="checklist-item">[&nbsp;&nbsp;&nbsp;] 5. Análise</div>
+            <div class="checklist-item">[&nbsp;&nbsp;&nbsp;] 6. Reporte</div>
         </div>
 
         <div class="btn-container">
@@ -164,16 +175,16 @@
         doc.setFontSize(10);
 
         function addField(label, id) {
-            const val = document.getElementById(id).value || document.getElementById(id).placeholder;
+            const el = document.getElementById(id);
+            const val = el.value || el.placeholder;
             doc.setFont(undefined, 'bold');
             doc.text(label, 20, yPos);
             doc.setFont(undefined, 'normal');
             const lines = doc.splitTextToSize(val, 150);
-            doc.text(lines, 30, yPos + 6);
+            doc.text(lines, 35, yPos + 6);
             yPos += (lines.length * 6) + 8;
         }
 
-        // Seção 1 e 2
         doc.setFontSize(12); doc.text("1. Objetivos e Critérios", 20, yPos); yPos += 10; doc.setFontSize(10);
         addField("Objetivo:", "objetivo");
         addField("Critério de Sucesso:", "criterio");
@@ -183,15 +194,19 @@
         addField("Ativos:", "ativos");
         addField("Exclusões:", "exclusoes");
 
-        // Quebra de página se necessário
-        if (yPos > 240) { doc.addPage(); yPos = 20; }
+        if (yPos > 220) { doc.addPage(); yPos = 20; }
 
-        // Matriz de Riscos
-        doc.setFontSize(12); doc.text("Matriz de Riscos do Teste", 20, yPos); yPos += 5;
+        doc.setFontSize(12); doc.setFont(undefined, 'bold');
+        doc.text("Matriz de Riscos do Teste", 20, yPos); yPos += 5;
+        
         const riskData = [];
         document.querySelectorAll("#tabelaRiscos tbody tr").forEach(row => {
             const inputs = row.querySelectorAll('input');
-            riskData.push([inputs[0].value, inputs[1].value, inputs[2].value]);
+            riskData.push([
+                inputs[0].value || inputs[0].placeholder, 
+                inputs[1].value || inputs[1].placeholder, 
+                inputs[2].value || inputs[2].placeholder
+            ]);
         });
 
         doc.autoTable({
@@ -199,31 +214,30 @@
             head: [['Risco', 'Impacto', 'Ação de Mitigação']],
             body: riskData,
             theme: 'grid',
-            headStyles: { fillColor: [240, 240, 240], textColor: 0 },
+            headStyles: { fillColor: [240, 240, 240], textColor: 0, fontStyle: 'bold' },
+            styles: { fontSize: 9, cellPadding: 3, textColor: 50 },
             margin: { left: 20, right: 20 }
         });
 
         yPos = doc.lastAutoTable.finalY + 15;
 
-        // Checklist Fixo (Impresso para preenchimento manual)
         doc.setFontSize(12); doc.setFont(undefined, 'bold');
         doc.text("Fluxo de Execução (Checklist)", 20, yPos);
         yPos += 10;
-        doc.setFont(undefined, 'normal');
-        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal'); doc.setFontSize(10);
 
         const items = [
-            "1. [ ] Autorização Formal: Obter o 'OK' dos donos do sistema.",
-            "2. [ ] Backup: Confirmar que os sistemas alvo possuem backups atualizados.",
-            "3. [ ] Notificação: Abrir chamado na fila do DSInf para acompanhamento.",
-            "4. [ ] Execução: Iniciar os scans conforme a metodologia definida.",
-            "5. [ ] Análise: Filtrar resultados e remover duplicidades ou erros.",
-            "6. [ ] Reporte: Submeter relatório técnico para o dono do serviço/sistema."
+            "1. [   ] Autorização Formal: Obter o 'OK' dos donos do sistema.",
+            "2. [   ] Backup: Confirmar que os sistemas alvo possuem backups atualizados.",
+            "3. [   ] Notificação: Abrir chamado na fila do DSInf para acompanhamento.",
+            "4. [   ] Execução: Iniciar os scans conforme a metodologia definida.",
+            "5. [   ] Análise: Filtrar resultados e remover duplicidades ou erros.",
+            "6. [   ] Reporte: Submeter relatório técnico para o dono do serviço/sistema."
         ];
 
         items.forEach(item => {
             doc.text(item, 25, yPos);
-            yPos += 7;
+            yPos += 8;
         });
 
         doc.save("Plano_de_Testes.pdf");
