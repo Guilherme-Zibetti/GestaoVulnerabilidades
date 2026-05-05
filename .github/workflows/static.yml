@@ -1,0 +1,44 @@
+# Nome do Workflow
+name: Deploy do Formulário
+
+on:
+  # Executa o deploy ao fazer push na branch main
+  push:
+    branches: ["main"]
+
+  # Permite executar o deploy manualmente pela aba Actions
+  workflow_dispatch:
+
+# Define permissões necessárias para o GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Garante que apenas um deploy ocorra por vez
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps: deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload da pasta public
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Define que apenas o conteúdo de 'public' será publicado
+          path: './public'
+
+      - name: Deploy para GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

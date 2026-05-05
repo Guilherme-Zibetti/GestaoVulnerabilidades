@@ -1,6 +1,6 @@
 # 📑 Gerador de Plano de Testes de Vulnerabilidades
 
-Este projeto é uma ferramenta web estática para a criação padronizada de **Planos de Testes de Vulnerabilidades**. Ele foi desenvolvido para auxiliar analistas de segurança e GRC no planejamento de varreduras e testes de intrusão, garantindo conformidade com as diretrizes institucionais.
+Este projeto é uma ferramenta web estática para a criação padronizada de **Planos de Testes de Vulnerabilidades**. Ele foi desenvolvido para auxiliar analistas de segurança no planejamento de varreduras e testes de intrusão, garantindo conformidade com as diretrizes da universidade.
 
 ---
 
@@ -11,7 +11,7 @@ O documento gerado por esta ferramenta visa atender aos seguintes requisitos de 
 *   **Formalização:** Registrar oficialmente o escopo e as autorizações antes de qualquer atividade técnica de varredura.
 *   **Gestão de Riscos:** Mapear possíveis impactos na infraestrutura (como instabilidade ou saturação de link) e definir planos de mitigação.
 *   **Padronização:** Garantir que todos os testes sigam a mesma metodologia, facilitando auditorias e revisões de conformidade.
-*   **Comunicação:** Servir como base para notificar o NOC/SOC e os donos de sistemas sobre as janelas de manutenção e testes.
+*   **Comunicação:** Servir como base para notificar o NOC e os donos de sistemas sobre as janelas de manutenção e testes.
 
 ---
 
@@ -28,8 +28,8 @@ Para utilizar a ferramenta hospedada via **GitLab Pages**:
     *   Clique no botão **"GERAR PDF DO PLANO"** ao final do formulário.
     *   O arquivo será processado e baixado localmente pelo seu navegador.
 4.  **Aprovação:**
-    *   Colete as assinaturas digitais ou aprovações formais conforme o fluxo de GRC.
-    *   Anexe o plano ao chamado de execução ou repositório de evidências.
+    *   Colete as assinaturas ou aprovações.
+    *   Anexe o plano ao chamado de execução e repositório de evidências.
 
 ---
 
@@ -40,15 +40,6 @@ Para utilizar a ferramenta hospedada via **GitLab Pages**:
 *   **Privacidade:** O processamento dos dados é **client-side**. Nenhuma informação inserida no formulário é enviada para servidores ou armazenada no GitLab, garantindo a confidencialidade dos dados da rede.
 
 ---
-
-## 📁 Estrutura do Repositório
-
-```text
-├── .gitlab-ci.yml    # Pipeline de deploy automatizado
-├── README.md         # Documentação (este arquivo)
-└── public/
-    └── index.html    # Interface do formulário e lógica do PDF
-```
 
 ## ⚖️ Licença e Uso
 Este projeto é de uso restrito institucional. As atividades de teste planejadas com este documento devem respeitar a Política de Gestão de Vulnerabilidades da organização.
