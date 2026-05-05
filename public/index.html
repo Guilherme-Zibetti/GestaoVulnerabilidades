@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Plano de Testes - GRC</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: #e0e0e0; padding: 40px; }
+        .container { max-width: 900px; background: #2d2d2d; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); margin: auto; }
+        h1 { text-align: center; color: #4dabf7; border-bottom: 2px solid #4dabf7; padding-bottom: 10px; }
+        h2 { color: #4dabf7; font-size: 1.3em; margin-top: 25px; border-left: 4px solid #4dabf7; padding-left: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #adb5bd; }
+        input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid #444; border-radius: 6px; background: #3d3d3d; color: #fff; box-sizing: border-box; }
+        input:focus, textarea:focus { border-color: #4dabf7; outline: none; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .btn-submit { display: block; width: 100%; padding: 18px; background-color: #228be6; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; margin-top: 30px; font-weight: bold; }
+        .btn-submit:hover { background-color: #1c7ed6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Plano de Testes de Vulnerabilidades</h1>
+    
+    <form id="planoForm">
+        <h2>1. Objetivos e Critérios</h2>
+        <div class="form-group">
+            <label>Objetivo:</label>
+            <textarea id="objetivo" placeholder="Identificar vulnerabilidades conhecidas, falhas de configuração e serviços desatualizados."></textarea>
+        </div>
+        <div class="form-group">
+            <label>Critério de Sucesso:</label>
+            <textarea id="criterio" placeholder="Cobertura de 100% dos ativos alvo e geração de relatórios sem falsos positivos..."></textarea>
+        </div>
+
+        <h2>2. Escopo e Exclusões</h2>
+        <div class="grid">
+            <div class="form-group">
+                <label>VLANs / Segmentos:</label>
+                <input type="text" id="vlan" placeholder="VLANs de servidores, redes administrativas...">
+            </div>
+            <div class="form-group">
+                <label>Exclusões (Sistemas Críticos):</label>
+                <input type="text" id="exclusoes" placeholder="Sistemas legados (e.g.: Sincro)">
+            </div>
+        </div>
+
+        <h2>3. Cronograma e Ferramentas</h2>
+        <div class="grid">
+            <div class="form-group">
+                <label>Janela de Scan:</label>
+                <input type="text" id="janela" placeholder="Sábado às 18:00 às 10:00 do Domingo">
+            </div>
+            <div class="form-group">
+                <label>Frequência:</label>
+                <input type="text" id="frequencia" placeholder="Trimestral para ativos externos">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Ferramentas Aprovadas:</label>
+            <input type="text" id="ferramentas" placeholder="OpenVAS, OWASP ZAP, Scripts Python customizados">
+        </div>
+
+        <button type="button" class="btn-submit" onclick="gerarPDF()">GERAR PDF DO PLANO</button>
+    </form>
+</div>
+
+<script>
+    function gerarPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Cabeçalho
+        doc.setFillColor(34, 139, 230);
+        doc.rect(0, 0, 210, 30, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(20);
+        doc.text("Plano de Testes de Vulnerabilidades", 20, 20);
+
+        // Conteúdo
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(14);
+        doc.text("1. Objetivos", 20, 45);
+        doc.setFontSize(10);
+        doc.text(doc.splitTextToSize("Objetivo: " + (document.getElementById('objetivo').value || document.getElementById('objetivo').placeholder), 170), 20, 55);
+        doc.text(doc.splitTextToSize("Sucesso: " + (document.getElementById('criterio').value || document.getElementById('criterio').placeholder), 170), 20, 65);
+
+        doc.setFontSize(14);
+        doc.text("2. Detalhes Técnicos", 20, 85);
+        doc.autoTable({
+            startY: 90,
+            head: [['Item', 'Descrição']],
+            body: [
+                ['VLANs', document.getElementById('vlan').value || document.getElementById('vlan').placeholder],
+                ['Exclusões', document.getElementById('exclusoes').value || document.getElementById('exclusoes').placeholder],
+                ['Janela', document.getElementById('janela').value || document.getElementById('janela').placeholder],
+                ['Ferramentas', document.getElementById('ferramentas').value || document.getElementById('ferramentas').placeholder]
+            ],
+            theme: 'striped'
+        });
+
+        doc.save("Plano_de_Testes_Vulnerabilidades.pdf");
+    }
+</script>
+</body>
+</html>
