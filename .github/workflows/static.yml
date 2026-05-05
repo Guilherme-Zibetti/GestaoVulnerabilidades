@@ -1,5 +1,5 @@
 # Nome do Workflow
-name: Deploy do Formulário GRC
+name: Deploy do Formulário
 
 on:
   # Executa o deploy ao fazer push na branch main
