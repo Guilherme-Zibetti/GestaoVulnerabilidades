@@ -19,23 +19,19 @@
         /* Tabela Matriz de Riscos */
         .table-container { margin: 20px 0; }
         table { width: 100%; border-collapse: collapse; border: 1px solid #333; }
-        th, td { border: 1px solid #333; text-align: left; position: relative; }
+        th, td { border: 1px solid #333; text-align: left; }
         th { background-color: #f2f2f2; font-weight: bold; padding: 12px; }
         .risk-input { width: 100%; border: none; padding: 12px; background: transparent; font-size: 14px; outline: none; box-sizing: border-box; }
-        .risk-input:focus { background-color: #fffbe6; }
 
-        /* Botões de controle de linha */
-        .row-controls { padding: 5px; text-align: center; width: 50px; }
         .btn-row { cursor: pointer; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold; }
-        .btn-add { background-color: #28a745; color: white; margin-bottom: 10px; display: inline-block; }
-        .btn-remove { background-color: #dc3545; color: white; padding: 2px 8px; font-size: 12px; }
+        .btn-add { background-color: #28a745; color: white; margin-bottom: 10px; }
+        .btn-remove { background-color: #dc3545; color: white; font-size: 12px; }
 
         .checklist-static { background: #fdfdfd; border: 1px dashed #ccc; padding: 25px; border-radius: 4px; }
         .checklist-item { margin-bottom: 12px; font-size: 15px; color: #333; font-family: monospace; }
 
         .btn-container { text-align: center; margin-top: 40px; }
-        .btn-submit { background-color: #1a1a1a; color: #fff; padding: 18px 40px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-submit:hover { background-color: #444; }
+        .btn-submit { background-color: #1a1a1a; color: #fff; padding: 18px 40px; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -68,6 +64,48 @@
             <input type="text" id="exclusoes" placeholder="Sistemas legados que podem travar com scans agressivos (e.g.: Sincro).">
         </div>
 
+        <h2>3. Metodologia de Teste</h2>
+        <div class="input-group">
+            <label>Scan Não Autenticado:</label>
+            <input type="text" id="scan_nao_autenticado" placeholder="Visão de um atacante externo.">
+        </div>
+        <div class="input-group">
+            <label>Scan Autenticado:</label>
+            <input type="text" id="scan_autenticado" placeholder="Visão interna detalhada.">
+        </div>
+        <div class="input-group">
+            <label>Testes de Intrusão:</label>
+            <input type="text" id="pentest" placeholder="Validação manual de vulnerabilidades críticas encontradas pelo scanner.">
+        </div>
+
+        <h2>4. Cronograma e Janelas de Execução</h2>
+        <div class="input-group">
+            <label>Janela de Scan:</label>
+            <input type="text" id="janela" placeholder="de sábado as 18:00 às 10:00 do Domingo.">
+        </div>
+        <div class="input-group">
+            <label>Frequência:</label>
+            <input type="text" id="frequencia" placeholder="Semestral para conformidade e trimestral para ativos expostos à internet.">
+        </div>
+
+        <h2>5. Ferramentas Utilizadas</h2>
+        <div class="input-group">
+            <label>Scanner de Rede:</label>
+            <input type="text" id="tool_rede" placeholder="OpenVAS.">
+        </div>
+        <div class="input-group">
+            <label>Scanner Web:</label>
+            <input type="text" id="tool_web" placeholder="OWASP ZAP.">
+        </div>
+        <div class="input-group">
+            <label>Scanner DB:</label>
+            <input type="text" id="tool_db" placeholder="Preencha se houver.">
+        </div>
+        <div class="input-group">
+            <label>Scripts Customizados:</label>
+            <input type="text" id="tool_scripts" placeholder="Scripts, e.g., python, para checagem de portas.">
+        </div>
+
         <h2>Matriz de Riscos do Teste</h2>
         <div class="table-container">
             <button type="button" class="btn-row btn-add" onclick="addRow()">+ Adicionar Risco</button>
@@ -85,13 +123,7 @@
                         <td><input type="text" class="risk-input" placeholder="Instabilidade de Sistema"></td>
                         <td><input type="text" class="risk-input" placeholder="Alto"></td>
                         <td><input type="text" class="risk-input" placeholder="Interromper o scan imediatamente e notificar o departamento responsável."></td>
-                        <td class="row-controls"><button type="button" class="btn-row btn-remove" onclick="removeRow(this)">X</button></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" class="risk-input" placeholder="Bloqueio de Contas"></td>
-                        <td><input type="text" class="risk-input" placeholder="Médio"></td>
-                        <td><input type="text" class="risk-input" placeholder="Usar contas de serviço específicas."></td>
-                        <td class="row-controls"><button type="button" class="btn-row btn-remove" onclick="removeRow(this)">X</button></td>
+                        <td style="text-align: center;"><button type="button" class="btn-row btn-remove" onclick="removeRow(this)">X</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -114,95 +146,102 @@
 </div>
 
 <script>
-    // Função para adicionar nova linha na matriz
     function addRow() {
         const tbody = document.querySelector("#tabelaRiscos tbody");
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><input type="text" class="risk-input" placeholder="Descreva o risco"></td>
+            <td><input type="text" class="risk-input" placeholder="Risco"></td>
             <td><input type="text" class="risk-input" placeholder="Impacto"></td>
             <td><input type="text" class="risk-input" placeholder="Mitigação"></td>
-            <td class="row-controls"><button type="button" class="btn-row btn-remove" onclick="removeRow(this)">X</button></td>
+            <td style="text-align: center;"><button type="button" class="btn-row btn-remove" onclick="removeRow(this)">X</button></td>
         `;
         tbody.appendChild(tr);
     }
 
-    // Função para remover linha específica
     function removeRow(btn) {
-        const row = btn.parentNode.parentNode;
-        row.parentNode.removeChild(row);
+        btn.closest('tr').remove();
     }
 
     function gerarPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         const pageWidth = doc.internal.pageSize.getWidth();
+        let yPos = 20;
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
-        doc.text("Plano de Testes de Vulnerabilidades", pageWidth / 2, 20, { align: "center" });
+        doc.text("Plano de Testes de Vulnerabilidades", pageWidth / 2, yPos, { align: "center" });
+        yPos += 15;
 
-        let yPos = 35;
-        doc.setFontSize(10);
-
-        function addField(label, id) {
+        function addField(label, id, checkY = true) {
             const el = document.getElementById(id);
-            if (!el) return;
             const val = el.value || el.placeholder;
             doc.setFont(undefined, 'bold');
+            doc.setFontSize(10);
             doc.text(label, 20, yPos);
             doc.setFont(undefined, 'normal');
             const lines = doc.splitTextToSize(val, 150);
             doc.text(lines, 35, yPos + 6);
             yPos += (lines.length * 6) + 8;
+            if (checkY && yPos > 270) { doc.addPage(); yPos = 20; }
         }
 
-        doc.setFontSize(12); doc.text("1. Objetivos e Critérios", 20, yPos); yPos += 10; doc.setFontSize(10);
+        // Seção 1
+        doc.setFontSize(12); doc.setFont(undefined, 'bold');
+        doc.text("1. Objetivos e Critérios", 20, yPos); yPos += 10;
         addField("Objetivo:", "objetivo");
         addField("Critério de Sucesso:", "criterio");
 
-        doc.setFontSize(12); doc.text("2. Escopo Detalhado", 20, yPos); yPos += 10; doc.setFontSize(10);
+        // Seção 2
+        doc.setFontSize(12); doc.setFont(undefined, 'bold');
+        doc.text("2. Escopo Detalhado", 20, yPos); yPos += 10;
         addField("Segmentos:", "segmentos");
         addField("Ativos:", "ativos");
         addField("Exclusões:", "exclusoes");
 
+        // Seção 3
+        doc.setFontSize(12); doc.setFont(undefined, 'bold');
+        doc.text("3. Metodologia de Teste", 20, yPos); yPos += 10;
+        addField("Não Autenticado:", "scan_nao_autenticado");
+        addField("Autenticado:", "scan_autenticado");
+        addField("Pentest:", "pentest");
+
+        // Seção 4
+        doc.setFontSize(12); doc.setFont(undefined, 'bold');
+        doc.text("4. Cronograma e Janelas", 20, yPos); yPos += 10;
+        addField("Janela:", "janela");
+        addField("Frequência:", "frequencia");
+
+        // Seção 5
+        doc.setFontSize(12); doc.setFont(undefined, 'bold');
+        doc.text("5. Ferramentas", 20, yPos); yPos += 10;
+        addField("Rede:", "tool_rede");
+        addField("Web:", "tool_web");
+        addField("Scripts:", "tool_scripts");
+
         if (yPos > 220) { doc.addPage(); yPos = 20; }
 
-        // Matriz de Riscos Dinâmica
+        // Matriz de Riscos
         doc.setFontSize(12); doc.setFont(undefined, 'bold');
         doc.text("Matriz de Riscos do Teste", 20, yPos); yPos += 5;
-        
         const riskData = [];
-        const rows = document.querySelectorAll("#tabelaRiscos tbody tr");
-        
-        rows.forEach(row => {
+        document.querySelectorAll("#tabelaRiscos tbody tr").forEach(row => {
             const inputs = row.querySelectorAll('input');
-            riskData.push([
-                inputs[0].value || inputs[0].placeholder, 
-                inputs[1].value || inputs[1].placeholder, 
-                inputs[2].value || inputs[2].placeholder
-            ]);
+            riskData.push([inputs[0].value || inputs[0].placeholder, inputs[1].value || inputs[1].placeholder, inputs[2].value || inputs[2].placeholder]);
         });
 
-        if(riskData.length > 0) {
-            doc.autoTable({
-                startY: yPos,
-                head: [['Risco', 'Impacto', 'Ação de Mitigação']],
-                body: riskData,
-                theme: 'grid',
-                headStyles: { fillColor: [240, 240, 240], textColor: 0, fontStyle: 'bold' },
-                styles: { fontSize: 9, cellPadding: 3, textColor: 50 },
-                margin: { left: 20, right: 20 }
-            });
-            yPos = doc.lastAutoTable.finalY + 15;
-        } else {
-            yPos += 10;
-            doc.text("Nenhum risco listado.", 25, yPos);
-            yPos += 10;
-        }
+        doc.autoTable({
+            startY: yPos,
+            head: [['Risco', 'Impacto', 'Ação de Mitigação']],
+            body: riskData,
+            theme: 'grid',
+            headStyles: { fillColor: [240, 240, 240], textColor: 0, fontStyle: 'bold' },
+            margin: { left: 20 }
+        });
 
-        if (yPos > 240) { doc.addPage(); yPos = 20; }
+        yPos = doc.lastAutoTable.finalY + 15;
 
+        // Checklist
         doc.setFontSize(12); doc.setFont(undefined, 'bold');
         doc.text("Fluxo de Execução (Checklist)", 20, yPos);
         yPos += 10;
@@ -218,6 +257,7 @@
         ];
 
         items.forEach(item => {
+            if (yPos > 280) { doc.addPage(); yPos = 20; }
             doc.text(item, 25, yPos);
             yPos += 8;
         });
@@ -225,6 +265,5 @@
         doc.save("Plano_de_Testes.pdf");
     }
 </script>
-
 </body>
 </html>
