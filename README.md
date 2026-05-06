@@ -43,3 +43,5 @@ Para utilizar a ferramenta hospedada via **GitLab Pages**:
 
 ## ⚖️ Licença e Uso
 Este projeto é de uso restrito institucional. As atividades de teste planejadas com este documento devem respeitar a Política de Gestão de Vulnerabilidades da organização.
+
+URL para o formulário: https://guilherme-zibetti.github.io/GestaoVulnerabilidades/
