@@ -107,6 +107,18 @@
             <input type="text" id="tool_scripts" placeholder="Scripts, e.g., python, para checagem de portas.">
         </div>
 
+        <h2>6. Observações Gerais</h2>
+        <div class="input-group">
+            <label>Observações:</label>
+            <textarea id="observacoes" placeholder="Insira aqui questões relevantes, exceções ou cenários específicos que não estavam previstos nos campos anteriores do formulário."></textarea>
+        </div>
+
+        <h2>7. Chamado Vinculado</h2>
+        <div class="input-group">
+            <label>Número do Chamado:</label>
+            <input type="text" id="chamado" placeholder="Ex: #123456 (Chamado na fila do DSInf para acompanhamento do teste).">
+        </div>
+
         <h2>Matriz de Riscos do Teste</h2>
         <div class="table-container">
             <button type="button" class="btn-row btn-add" onclick="addRow()">+ Adicionar Risco</button>
@@ -116,7 +128,7 @@
                         <th>Risco</th>
                         <th>Impacto</th>
                         <th>Ação de Mitigação</th>
-                        <th style="width: 40px; background-color: #f2f2f2;"></th> <!-- Célula Ação removida -->
+                        <th style="width: 40px; background-color: #f2f2f2;"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -237,6 +249,20 @@
         addField("Rede:", "tool_rede");
         addField("Web:", "tool_web");
         addField("Scripts:", "tool_scripts");
+
+        if (yPos > 220) { doc.addPage(); yPos = 20; }
+
+        // Seção 6: Observações
+        doc.setFontSize(12); doc.setFont(undefined, 'bold');
+        doc.text("6. Observações Gerais", 20, yPos); yPos += 10;
+        addField("Observações:", "observacoes");
+
+        if (yPos > 220) { doc.addPage(); yPos = 20; }
+
+        // Seção 7: Chamado Vinculado
+        doc.setFontSize(12); doc.setFont(undefined, 'bold');
+        doc.text("7. Chamado Vinculado", 20, yPos); yPos += 10;
+        addField("Número do Chamado:", "chamado");
 
         if (yPos > 220) { doc.addPage(); yPos = 20; }
 
